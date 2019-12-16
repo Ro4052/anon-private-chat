@@ -1,0 +1,13 @@
+.dashboardContainer {
+  position: absolute;
+  display: grid;
+  max-width: 400px;
+  width: calc(100% - 2em);
+  top: 40%;
+  right: 50%;
+  transform: translate(50%, -50%);
+}
+
+.createButton {
+  margin: 5px 0 0 !important;
+}
