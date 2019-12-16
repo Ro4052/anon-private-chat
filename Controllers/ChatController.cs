@@ -2,27 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AnonPrivateChat.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace AnonPrivateChat.Controllers
 {
     [ApiController]
-    [Route("/api/")]
     public class ChatController : ControllerBase
     {
-        private readonly ILogger<ChatController> _logger;
+        private readonly IChatService _chatService;
 
-        public ChatController(ILogger<ChatController> logger)
+        public ChatController(IChatService chatService)
         {
-            _logger = logger;
+            _chatService = chatService;
+        }
+
+        [HttpPost]
+        [Route("/create-chat")]
+        public string CreateChat()
+        {
+            return _chatService.Test();
         }
 
         [HttpGet]
-        [Route("/init")]
-        public string Init()
+        [Route("/get-messages")]
+        public string GetMessages()
         {
-            return "init";
+            return "get-messages";
         }
     }
 }
