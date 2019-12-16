@@ -8,7 +8,7 @@ export default function Dashboard() {
     <div className={styles.dashboardContainer}>
       <Message info floating content="Enter a chat ID or create a room" />
       <Input
-        action={{ icon: "angle double right", color: "green" }}
+        action={{ icon: "angle double right", color: "green", inverted: true }}
         placeholder="Chat ID"
       />
       <Button
