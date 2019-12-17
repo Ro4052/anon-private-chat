@@ -1,7 +1,7 @@
 import { delay, tap, mapTo } from "rxjs/operators";
 import { ofType } from "redux-observable";
 
-import { getActionSteps } from "./common";
+import { getActionSteps } from "./utils";
 
 const UPDATE_USERNAME = getActionSteps("UPDATE_USERNAME");
 

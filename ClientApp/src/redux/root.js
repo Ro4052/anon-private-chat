@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 
 import user, { updateUsernameEpic } from "./user-reducer";
-import message from "./message-reducer";
+import chat from "./chat-reducer";
 
 export const rootReducer = combineReducers({
   user,
-  message
+  chat
 });
 
 export const rootEpic = updateUsernameEpic;
