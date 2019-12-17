@@ -5,13 +5,20 @@ using System.Threading.Tasks;
 
 namespace AnonPrivateChat.Models
 {
-    public class User
+    public class Chat
     {
         public readonly Guid Id;
+        private List<User> _users { get; }
 
-        public User(Guid id)
+        public Chat(Guid id)
         {
             Id = id;
+            _users = new List<User>();
+        }
+
+        public List<User> Users
+        {
+            get { return _users;  }
         }
     }
 }

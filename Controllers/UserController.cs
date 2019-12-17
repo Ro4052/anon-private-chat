@@ -18,11 +18,11 @@ namespace AnonPrivateChat.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
-        [Route("/init")]
-        public Guid Init()
-        {
-            return _userService.CreateUser();
-        }
+        //[HttpGet]
+        //[Route("/init")]
+        //public Guid Init()
+        //{
+        //    return _userService.CreateUser();
+        //}
     }
 }

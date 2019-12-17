@@ -20,16 +20,16 @@ namespace AnonPrivateChat.Controllers
 
         [HttpPost]
         [Route("/create-chat")]
-        public string CreateChat()
+        public Guid CreateChat()
         {
-            return _chatService.Test();
+            return _chatService.CreateChat();
         }
 
         [HttpGet]
-        [Route("/get-messages")]
+        [Route("/init-chat")]
         public string GetMessages()
         {
-            return "get-messages";
+            return "init-chat";
         }
     }
 }

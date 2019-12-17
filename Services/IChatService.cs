@@ -7,6 +7,6 @@ namespace AnonPrivateChat.Services
 {
     public interface IChatService
     {
-        string Test();
+        Guid CreateChat();
     }
 }
