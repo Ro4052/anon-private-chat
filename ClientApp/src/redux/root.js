@@ -1,7 +1,6 @@
 import { combineReducers } from "redux";
-import { combineEpics } from "redux-observable";
 
-import user, { initEpic, updateUsernameEpic } from "./user-reducer";
+import user, { updateUsernameEpic } from "./user-reducer";
 import message from "./message-reducer";
 
 export const rootReducer = combineReducers({
@@ -9,4 +8,4 @@ export const rootReducer = combineReducers({
   message
 });
 
-export const rootEpic = combineEpics(initEpic, updateUsernameEpic);
+export const rootEpic = updateUsernameEpic;
