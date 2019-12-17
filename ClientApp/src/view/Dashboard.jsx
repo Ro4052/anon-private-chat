@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { Message, Input, Button } from "semantic-ui-react";
 
-import history from "../history";
 import { createChat } from "../redux/chat-reducer";
 import styles from "./Dashboard.module.css";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [chatId, setChatId] = useState("");
 
   function onChange(e) {
