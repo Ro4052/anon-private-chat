@@ -1,20 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Message, Input, Button } from "semantic-ui-react";
 
+import history from "../history";
 import { createChat } from "../redux/chat-reducer";
 import styles from "./Dashboard.module.css";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
+  const [chatId, setChatId] = useState("");
+
+  function onChange(e) {
+    if (e.target.value.length <= 36) {
+      setChatId(e.target.value);
+    }
+  }
+
+  function onSubmit(e) {
+    e.preventDefault();
+    if (chatId.length === 36) history.push(`/chat/${chatId}`);
+  }
 
   return (
     <div className={styles.dashboardContainer}>
       <Message info floating content="Enter a chat ID or create a room" />
-      <Input
-        action={{ icon: "angle double right", color: "green", inverted: true }}
-        placeholder="Chat ID"
-      />
+      <form onSubmit={onSubmit}>
+        <Input
+          fluid
+          action={{
+            icon: "angle double right",
+            color: "green",
+            inverted: true,
+            disabled: chatId.length !== 36
+          }}
+          placeholder="Chat ID"
+          onChange={onChange}
+          value={chatId}
+        />
+      </form>
       <Button
         className={styles.createButton}
         inverted
