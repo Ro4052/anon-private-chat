@@ -16,13 +16,13 @@ export default function Dashboard() {
     dispatch(clearStore());
   }, [dispatch]);
 
-  function onChange(e) {
+  function handleChange(e) {
     if (e.target.value.length <= 36) {
       setChatId(e.target.value);
     }
   }
 
-  function onSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
     if (chatId.length === 36) history.push(`/chat/${chatId}`);
   }
@@ -30,7 +30,7 @@ export default function Dashboard() {
   return (
     <div className={styles.dashboardContainer}>
       <Message info floating content="Enter a chat ID or create a room" />
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit}>
         <Input
           fluid
           action={{
@@ -40,7 +40,7 @@ export default function Dashboard() {
             disabled: chatId.length !== 36
           }}
           placeholder="Chat ID"
-          onChange={onChange}
+          onChange={handleChange}
           value={chatId}
         />
       </form>

@@ -1,0 +1,14 @@
+.chatContainer {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 2em);
+  width: calc(100vw - 2em);
+  background-color: #757575;
+  border-radius: 5px;
+  overflow-y: auto;
+}
+
+.messageContainer {
+  flex-grow: 1;
+}

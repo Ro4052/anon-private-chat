@@ -1,0 +1,21 @@
+.baseMessage {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.baseMessage p {
+  margin: 0;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.myUserMessage {
+  background-color: #81da81cc;
+}
+
+.otherUserMessage {
+  background-color: #ecec55cc;
+}
