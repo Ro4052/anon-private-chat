@@ -1,11 +1,16 @@
 import { combineReducers } from "redux";
+import { combineEpics } from "redux-observable";
 
 import user, { updateUsernameEpic } from "./user-reducer";
-import chat from "./chat-reducer";
+import chat, { createChatEpic, initChatEpic } from "./chat-reducer";
 
 export const rootReducer = combineReducers({
   user,
   chat
 });
 
-export const rootEpic = updateUsernameEpic;
+export const rootEpic = combineEpics(
+  updateUsernameEpic,
+  createChatEpic,
+  initChatEpic
+);

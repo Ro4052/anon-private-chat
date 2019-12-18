@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { dispatch } from "../redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { invalidChatId } from "../redux/chat-reducer";
+import { invalidChatId, initChat } from "../redux/chat-reducer";
 
 const isValidId = id =>
   id.match(
@@ -9,8 +9,12 @@ const isValidId = id =>
   );
 
 export default function useChatRoom() {
+  const dispatch = useDispatch();
+  const isChatInitialised = useSelector(state => state.chat.isChatInitialised);
+
   useEffect(() => {
     const chatId = window.location.pathname.replace("/chat/", "");
     if (!isValidId(chatId)) dispatch(invalidChatId());
-  }, []);
+    else if (!isChatInitialised) dispatch(initChat(chatId));
+  }, [dispatch, isChatInitialised]);
 }

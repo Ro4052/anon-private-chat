@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AnonPrivateChat.Parsers;
 using AnonPrivateChat.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace AnonPrivateChat.Controllers
 {
@@ -25,11 +22,11 @@ namespace AnonPrivateChat.Controllers
             return _chatService.CreateChat();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/init-chat")]
-        public string GetMessages()
+        public Guid InitChat(InitChatParser body)
         {
-            return "init-chat";
+            return _chatService.InitChat(body.GetParsedUserId(), body.GetParsedChatId());
         }
     }
 }

@@ -1,8 +1,10 @@
 import { delay, tap, mapTo } from "rxjs/operators";
 import { ofType } from "redux-observable";
 
+import { setUserId } from "../sessionStore";
 import { getActionSteps } from "./utils";
 
+export const CLEAR_STORE = "CLEAR_STORE";
 const UPDATE_USERNAME = getActionSteps("UPDATE_USERNAME");
 
 const initialState = {
@@ -11,6 +13,9 @@ const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+    case CLEAR_STORE: {
+      return initialState;
+    }
     default: {
       return state;
     }
@@ -24,3 +29,8 @@ export const updateUsernameEpic = action$ =>
     tap(name => console.log(name)),
     mapTo({ type: UPDATE_USERNAME.success })
   );
+
+export const clearStore = () => {
+  setUserId(null);
+  return { type: CLEAR_STORE };
+};

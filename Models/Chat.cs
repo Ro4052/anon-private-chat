@@ -1,24 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AnonPrivateChat.Models
 {
     public class Chat
     {
         public readonly Guid Id;
-        private List<User> _users { get; }
+        private List<Guid> _userIds { get; }
 
         public Chat(Guid id)
         {
             Id = id;
-            _users = new List<User>();
+            _userIds = new List<Guid>();
         }
 
-        public List<User> Users
+        public List<Guid> Users
         {
-            get { return _users;  }
+            get { return _userIds;  }
+        }
+
+        public void AddMember(Guid userId)
+        {
+            _userIds.Add(userId);
         }
     }
 }

@@ -1,16 +1,29 @@
-﻿using AnonPrivateChat.Models;
+﻿using AnonPrivateChat.Exceptions;
+using AnonPrivateChat.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Timers;
+using System.Threading;
 
 namespace AnonPrivateChat.Services
 {
     public class ChatService : IChatService
     {
+        private readonly IUserService _userService;
         private List<Chat> _chats = new List<Chat>();
+
+        public ChatService(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        private static void RemoveUnjoinedChat(List<Chat> chats, Chat chat)
+        {
+            Thread.Sleep(300000);
+            if (chat.Users.Count == 0)
+            {
+                chats.Remove(chat);
+            }
+        }
 
         public Guid CreateChat()
         {
@@ -18,20 +31,30 @@ namespace AnonPrivateChat.Services
             var chat = new Chat(chatId);
             _chats.Add(chat);
 
-            var timer = new Timer(300000);
-            timer.Elapsed += (sender, e) => RemoveUnjoinedChat(chat);
-            timer.AutoReset = false;
-            timer.Enabled = true;
+            Thread thread = new Thread(() => RemoveUnjoinedChat(_chats, chat));
+            thread.Start();
 
             return chatId;
         }
 
-        private void RemoveUnjoinedChat(Chat chat)
+
+        public Guid InitChat(Guid? userId, Guid chatId)
         {
-            if (chat.Users.Count == 0)
+            var chat = _chats.Find(c => c.Id == chatId);
+            if (chat == null)
             {
-                _chats.Remove(chat);
+                throw new ChatNotFoundException();
             }
+
+            var convertedUserId = userId.GetValueOrDefault();
+            if (userId == null || _userService.GetUser(convertedUserId) == null)
+            {
+                convertedUserId = _userService.CreateUser();
+            }
+
+            chat.AddMember(convertedUserId);
+
+            return convertedUserId;
         }
     }
 }

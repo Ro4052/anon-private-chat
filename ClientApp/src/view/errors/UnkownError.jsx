@@ -5,13 +5,13 @@ import { Button } from "semantic-ui-react";
 
 import { clearStore } from "../../redux/user-reducer";
 
-export default function InvalidChatId() {
+export default function UnknownError() {
   const dispatch = useDispatch();
   const history = useHistory();
 
   return (
     <>
-      <span>Invalid chat ID</span>
+      <span>Unknown error</span>
       <Button
         primary
         onClick={() => {

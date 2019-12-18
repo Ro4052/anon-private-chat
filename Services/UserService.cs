@@ -1,8 +1,6 @@
 ﻿using AnonPrivateChat.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AnonPrivateChat.Services
 {
@@ -17,6 +15,11 @@ namespace AnonPrivateChat.Services
             _users.Add(newUser);
 
             return newId;
+        }
+
+        public User GetUser(Guid id)
+        {
+            return _users.Find(user => user.Id == id);
         }
     }
 }
