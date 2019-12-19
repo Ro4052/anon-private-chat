@@ -4,6 +4,7 @@ using AnonPrivateChat.Repositories;
 using System;
 using System.Net.WebSockets;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace AnonPrivateChat.Services
 {
@@ -18,16 +19,38 @@ namespace AnonPrivateChat.Services
             _chatRepo = chatRepo;
         }
 
-        public async void NewSocket(WebSocket socket, CancellationToken ct)
+        public async Task NewSocket(WebSocket socket, CancellationToken ct)
         {
-            Console.WriteLine("New socket connected");
             var userId = new Guid(await SocketHelper.ReceiveStringAsync(socket, ct));
             var user = _userRepo.GetOne(userId);
             user.Socket = socket;
             user.Ct = ct;
 
-            //var msg = await SocketHelper.ReceiveStringAsync(socket, ct);
-            Console.WriteLine(userId);
+            bool isSocketAlive = true;
+            while (isSocketAlive)
+            {
+                try
+                {
+                    string msg = await ListenForMessage(user);
+                    if (msg == null) isSocketAlive = false;
+                }
+                catch (Exception)
+                {
+                    isSocketAlive = false; 
+                }
+            }
+        }
+
+        private async Task<string> ListenForMessage(User user)
+        {
+            var msg = await SocketHelper.ReceiveStringAsync(user.Socket, user.Ct);
+            if (msg != null)
+            {
+                Console.WriteLine("Received message:");
+                Console.WriteLine(msg);
+            }
+
+            return msg;
         }
     }
 }

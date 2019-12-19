@@ -28,7 +28,7 @@ namespace AnonPrivateChat.Middleware
             var ct = context.RequestAborted;
             var socket = await context.WebSockets.AcceptWebSocketAsync();
 
-            _socketService.NewSocket(socket, ct);
+            await _socketService.NewSocket(socket, ct);
         }
     }
 
