@@ -12,7 +12,7 @@ export default function Message({ user, msg, isMine }) {
       )}
     >
       <p className={styles.username}>
-        {isMine ? "You" : user || "Un-named user"}
+        {isMine ? "You" : user || "Unnamed user"}
       </p>
       <p>{msg}</p>
     </div>
