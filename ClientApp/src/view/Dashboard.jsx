@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Message, Input, Button } from "semantic-ui-react";
 
+import { isValidGuid } from "../utils";
 import { clearStore } from "../redux/user-reducer";
 import { createChat } from "../redux/chat-reducer";
 import styles from "./Dashboard.module.css";
@@ -37,7 +38,7 @@ export default function Dashboard() {
             icon: "angle double right",
             color: "green",
             inverted: true,
-            disabled: chatId.length !== 36
+            disabled: !isValidGuid(chatId)
           }}
           placeholder="Chat ID"
           onChange={handleChange}

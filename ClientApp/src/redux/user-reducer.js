@@ -2,7 +2,7 @@ import { delay, tap, mapTo } from "rxjs/operators";
 import { ofType } from "redux-observable";
 
 import { setUserId } from "../sessionStore";
-import { getActionSteps } from "./utils";
+import { getActionSteps } from "./redux-utils";
 
 export const CLEAR_STORE = "CLEAR_STORE";
 const UPDATE_USERNAME = getActionSteps("UPDATE_USERNAME");

@@ -6,8 +6,9 @@ import axios from "axios";
 import { CLEAR_STORE } from "./user-reducer";
 import { getUserId, setUserId } from "../sessionStore";
 import history from "../history";
+import { connect } from "../sockets";
 import * as errors from "../error-types";
-import { getActionSteps } from "./utils";
+import { getActionSteps } from "./redux-utils";
 
 const CREATE_CHAT = getActionSteps("CREATE_CHAT");
 const INIT_CHAT = getActionSteps("INIT_CHAT");
@@ -64,7 +65,7 @@ export default function reducer(state = initialState, action = {}) {
 export const createChatEpic = action$ =>
   action$.pipe(
     ofType(CREATE_CHAT.request),
-    switchMap(() => from(axios.post("/create-chat"))),
+    switchMap(() => from(axios.post("/api/create-chat"))),
     tap(({ data }) => history.push(`/chat/${data}`)),
     mapTo({ type: CREATE_CHAT.success }),
     catchError(() => of({ type: CREATE_CHAT.failure }))
@@ -73,12 +74,18 @@ export const createChatEpic = action$ =>
 export const initChatEpic = action$ =>
   action$.pipe(
     ofType(INIT_CHAT.request),
-    switchMap(action =>
+    switchMap(({ chatId }) =>
       from(
-        axios.post("/init-chat", { userId: getUserId(), chatId: action.chatId })
+        axios.post("/api/init-chat", {
+          userId: getUserId(),
+          chatId
+        })
       )
     ),
-    tap(({ data }) => setUserId(data)),
+    tap(({ data }) => {
+      setUserId(data);
+      connect(data);
+    }),
     mapTo({ type: INIT_CHAT.success }),
     catchError(e =>
       of({

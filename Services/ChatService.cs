@@ -1,7 +1,7 @@
 ﻿using AnonPrivateChat.Exceptions;
 using AnonPrivateChat.Models;
+using AnonPrivateChat.Repositories;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace AnonPrivateChat.Services
@@ -9,19 +9,20 @@ namespace AnonPrivateChat.Services
     public class ChatService : IChatService
     {
         private readonly IUserService _userService;
-        private List<Chat> _chats = new List<Chat>();
+        private readonly IRepository<Chat> _chatRepo;
 
-        public ChatService(IUserService userService)
+        public ChatService(IUserService userService, IRepository<Chat> chatRepo)
         {
             _userService = userService;
+            _chatRepo = chatRepo;
         }
 
-        private static void RemoveUnjoinedChat(List<Chat> chats, Chat chat)
+        private static void RemoveUnjoinedChat(IRepository<Chat> chats, Chat chat)
         {
             Thread.Sleep(300000);
             if (chat.Users.Count == 0)
             {
-                chats.Remove(chat);
+                chats.RemoveOne(chat.Id);
             }
         }
 
@@ -29,9 +30,9 @@ namespace AnonPrivateChat.Services
         {
             var chatId = Guid.NewGuid();
             var chat = new Chat(chatId);
-            _chats.Add(chat);
+            _chatRepo.AddOne(chat);
 
-            Thread thread = new Thread(() => RemoveUnjoinedChat(_chats, chat));
+            Thread thread = new Thread(() => RemoveUnjoinedChat(_chatRepo, chat));
             thread.Start();
 
             return chatId;
@@ -40,7 +41,7 @@ namespace AnonPrivateChat.Services
 
         public Guid InitChat(Guid? userId, Guid chatId)
         {
-            var chat = _chats.Find(c => c.Id == chatId);
+            var chat = _chatRepo.GetOne(chatId);
             if (chat == null)
             {
                 throw new ChatNotFoundException();

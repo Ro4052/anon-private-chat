@@ -1,9 +1,12 @@
 using AnonPrivateChat.Middleware;
+using AnonPrivateChat.Models;
+using AnonPrivateChat.Repositories;
 using AnonPrivateChat.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace AnonPrivateChat
 {
@@ -25,6 +28,9 @@ namespace AnonPrivateChat
             // Dependency injections
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IChatService, ChatService>();
+            services.AddSingleton<ISocketService, SocketService>();
+            services.AddSingleton<IRepository<User>, UserRepository>();
+            services.AddSingleton<IRepository<Chat>, ChatRepository>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -39,6 +45,13 @@ namespace AnonPrivateChat
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            var webSocketOptions = new WebSocketOptions()
+            {
+                KeepAliveInterval = TimeSpan.FromMinutes(1)
+            };
+            app.UseWebSockets(webSocketOptions);
+            app.UseSocketMiddleware();
 
             app.UseRouting();
             app.UseExceptionMiddleware();

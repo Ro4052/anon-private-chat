@@ -16,14 +16,14 @@ namespace AnonPrivateChat.Controllers
         }
 
         [HttpPost]
-        [Route("/create-chat")]
+        [Route("/api/create-chat")]
         public Guid CreateChat()
         {
             return _chatService.CreateChat();
         }
 
         [HttpPost]
-        [Route("/init-chat")]
+        [Route("/api/init-chat")]
         public Guid InitChat(InitChatParser body)
         {
             return _chatService.InitChat(body.GetParsedUserId(), body.GetParsedChatId());
