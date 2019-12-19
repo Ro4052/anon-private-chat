@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { Message, Input, Button } from "semantic-ui-react";
 
 import { isValidGuid } from "../utils";
+import { disconnect } from "../sockets";
 import { clearStore } from "../redux/user-reducer";
 import { createChat } from "../redux/chat-reducer";
 import styles from "./Dashboard.module.css";
@@ -14,6 +15,7 @@ export default function Dashboard() {
   const [chatId, setChatId] = useState("");
 
   useEffect(() => {
+    disconnect();
     dispatch(clearStore());
   }, [dispatch]);
 

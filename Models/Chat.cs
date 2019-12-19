@@ -14,7 +14,7 @@ namespace AnonPrivateChat.Models
             _userIds = new List<Guid>();
         }
 
-        public List<Guid> Users
+        public List<Guid> UserIds
         {
             get { return _userIds;  }
         }

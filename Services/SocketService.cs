@@ -1,7 +1,9 @@
 ﻿using AnonPrivateChat.Helpers;
 using AnonPrivateChat.Models;
 using AnonPrivateChat.Repositories;
+using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,6 +25,8 @@ namespace AnonPrivateChat.Services
         {
             var userId = new Guid(await SocketHelper.ReceiveStringAsync(socket, ct));
             var user = _userRepo.GetOne(userId);
+            var chat = _chatRepo.GetOne(user.ChatId);
+
             user.Socket = socket;
             user.Ct = ct;
 
@@ -31,7 +35,7 @@ namespace AnonPrivateChat.Services
             {
                 try
                 {
-                    string msg = await ListenForMessage(user);
+                    string msg = await ListenForMessage(user, chat);
                     if (msg == null) isSocketAlive = false;
                 }
                 catch (Exception)
@@ -39,18 +43,30 @@ namespace AnonPrivateChat.Services
                     isSocketAlive = false; 
                 }
             }
+
+            user.Socket = null;
+            chat.UserIds.Remove(userId);
         }
 
-        private async Task<string> ListenForMessage(User user)
+        private async Task<string> ListenForMessage(User user, Chat chat)
         {
             var msg = await SocketHelper.ReceiveStringAsync(user.Socket, user.Ct);
             if (msg != null)
             {
-                Console.WriteLine("Received message:");
-                Console.WriteLine(msg);
+                await BroadCastMessage(chat, user, msg);
             }
 
             return msg;
+        }
+
+        private async Task BroadCastMessage(Chat chat, User user, string msg)
+        {
+            await Task.WhenAll(chat.UserIds.Select(async targetId =>
+            {
+                var targetUser = _userRepo.GetOne(targetId);
+                var message = new Message(user.Username, msg, user.Id == targetUser.Id);
+                await SocketHelper.SendStringAsync(targetUser.Socket, JsonConvert.SerializeObject(message), targetUser.Ct);
+            }));
         }
     }
 }

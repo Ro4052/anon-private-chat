@@ -20,7 +20,7 @@ namespace AnonPrivateChat.Services
         private static void RemoveUnjoinedChat(IRepository<Chat> chats, Chat chat)
         {
             Thread.Sleep(300000);
-            if (chat.Users.Count == 0)
+            if (chat.UserIds.Count == 0)
             {
                 chats.RemoveOne(chat.Id);
             }
@@ -50,9 +50,13 @@ namespace AnonPrivateChat.Services
             var convertedUserId = userId.GetValueOrDefault();
             if (userId == null || _userService.GetUser(convertedUserId) == null)
             {
-                convertedUserId = _userService.CreateUser();
+                convertedUserId = _userService.CreateUser(chatId);
             }
 
+            //if (chat.UserIds.FindAll(c => c == convertedUserId).Count == 0)
+            //{
+            //    chat.AddMember(convertedUserId);
+            //}
             chat.AddMember(convertedUserId);
 
             return convertedUserId;

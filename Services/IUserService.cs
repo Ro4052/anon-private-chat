@@ -8,7 +8,7 @@ namespace AnonPrivateChat.Services
 {
     public interface IUserService
     {
-        Guid CreateUser();
+        Guid CreateUser(Guid chatId);
 
         User GetUser(Guid id);
     }

@@ -1,4 +1,6 @@
-let socket;
+import handleMessage from "./message-receiver";
+
+let socket = null;
 
 export function connect(userId) {
   const wsProtocol = window.location.protocol === "http:" ? "ws" : "wss";
@@ -21,6 +23,13 @@ export function connect(userId) {
   };
 
   socket.onmessage = ({ data: msg }) => {
-    console.log(`Message from server: ${msg}`);
+    handleMessage(JSON.parse(msg));
   };
+}
+
+export function disconnect() {
+  if (socket?.readyState === 1) {
+    socket.close();
+    socket = null;
+  }
 }

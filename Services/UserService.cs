@@ -1,7 +1,6 @@
 ﻿using AnonPrivateChat.Models;
 using AnonPrivateChat.Repositories;
 using System;
-using System.Collections.Generic;
 
 namespace AnonPrivateChat.Services
 {
@@ -14,10 +13,10 @@ namespace AnonPrivateChat.Services
             _userRepo = userRepo;
         }
 
-        public Guid CreateUser()
+        public Guid CreateUser(Guid chatId)
         {
             var newId = Guid.NewGuid();
-            var newUser = new User(newId);
+            var newUser = new User(newId, chatId);
             _userRepo.AddOne(newUser);
 
             return newId;

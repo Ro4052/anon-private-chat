@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 
+import { disconnect } from "../../sockets";
 import InvalidChatId from "./InvalidChatId";
 import UnknownError from "./UnkownError";
 
@@ -8,5 +9,7 @@ const errors = {
 };
 
 export function Error({ error }) {
+  useEffect(() => disconnect(), []);
+
   return errors[error] || <UnknownError />;
 }

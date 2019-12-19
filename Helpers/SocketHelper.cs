@@ -10,9 +10,9 @@ namespace AnonPrivateChat.Helpers
 {
     public class SocketHelper
     {
-        public static Task SendStringAsync(WebSocket socket, string data, CancellationToken ct = default)
+        public static Task SendStringAsync(WebSocket socket, string msg, CancellationToken ct = default)
         {
-            var buffer = Encoding.UTF8.GetBytes(data);
+            var buffer = Encoding.UTF8.GetBytes(msg);
             var segment = new ArraySegment<byte>(buffer);
             return socket.SendAsync(segment, WebSocketMessageType.Text, true, ct);
         }
