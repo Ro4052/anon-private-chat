@@ -2,15 +2,15 @@
 {
     public class Message
     {
-        public string Username { get; private set; }
+        public string User { get; private set; }
         public string Msg { get; private set; }
-        public bool IsMe { get; private set; }
+        public bool IsMine { get; private set; }
 
-        public Message(string username, string msg, bool isMe)
+        public Message(string user, string msg, bool isMine)
         {
-            Username = username;
+            User = user;
             Msg = msg;
-            IsMe = isMe;
+            IsMine = isMine;
         }
     }
 }

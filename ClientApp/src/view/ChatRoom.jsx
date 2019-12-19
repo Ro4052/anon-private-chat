@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Input } from "semantic-ui-react";
 
+import { sendMessage } from "../sockets";
 import useChatRoom from "../hooks/useChatRoom";
 import Message from "./Message";
 import styles from "./ChatRoom.module.css";
@@ -17,15 +18,15 @@ export default function ChatRoom() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(inputContent);
+    sendMessage(inputContent);
     setInputContent("");
   }
 
   return (
     <div className={styles.chatContainer}>
       <div className={styles.messageContainer}>
-        {messages.map(msg => (
-          <Message {...msg} />
+        {messages.map((msg, i) => (
+          <Message key={i} {...msg} />
         ))}
       </div>
       <form onSubmit={handleSubmit}>

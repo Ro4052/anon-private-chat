@@ -27,6 +27,10 @@ export function connect(userId) {
   };
 }
 
+export function sendMessage(msg) {
+  socket.send(msg);
+}
+
 export function disconnect() {
   if (socket?.readyState === 1) {
     socket.close();

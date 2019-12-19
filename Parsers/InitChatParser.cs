@@ -25,7 +25,7 @@ namespace AnonPrivateChat.Parsers
 
         public Guid? GetParsedUserId()
         {
-            return _userId == "null" ? (Guid?)null : new Guid(_userId);
+            return _userId == null ? (Guid?)null : new Guid(_userId);
         }
 
         public Guid GetParsedChatId()

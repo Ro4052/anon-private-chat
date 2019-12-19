@@ -11,7 +11,9 @@ export default function Message({ user, msg, isMine }) {
         isMine ? styles.myUserMessage : styles.otherUserMessage
       )}
     >
-      <p className={styles.username}>{user}</p>
+      <p className={styles.username}>
+        {isMine ? "You" : user || "Un-named user"}
+      </p>
       <p>{msg}</p>
     </div>
   );

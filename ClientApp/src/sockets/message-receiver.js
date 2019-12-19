@@ -1,5 +1,10 @@
+import { dispatch } from "../redux";
+
+import { newMessage } from "../redux/chat-reducer";
+
 export default function handleMessage(msg) {
-  console.log(formatMessageKeys(msg));
+  const message = formatMessageKeys(msg);
+  dispatch(newMessage(message));
 }
 
 function formatMessageKeys(msg) {

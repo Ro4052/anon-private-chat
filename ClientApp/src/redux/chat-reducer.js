@@ -13,6 +13,7 @@ import { getActionSteps } from "./redux-utils";
 const CREATE_CHAT = getActionSteps("CREATE_CHAT");
 const INIT_CHAT = getActionSteps("INIT_CHAT");
 const INVALID_CHAT_ID = "INVALID_CHAT_ID";
+const NEW_MESSAGE = "NEW_MESSAGE";
 
 const initialState = {
   isPageLoading: false,
@@ -55,6 +56,9 @@ export default function reducer(state = initialState, action = {}) {
     }
     case INVALID_CHAT_ID: {
       return { ...state, pageError: errors.INVALID_CHAT_ID_ERROR };
+    }
+    case NEW_MESSAGE: {
+      return { ...state, messages: [...state.messages, action.msg] };
     }
     default: {
       return state;
@@ -109,4 +113,9 @@ export const invalidChatId = () => ({
 export const initChat = chatId => ({
   type: INIT_CHAT.request,
   chatId
+});
+
+export const newMessage = msg => ({
+  type: NEW_MESSAGE,
+  msg
 });

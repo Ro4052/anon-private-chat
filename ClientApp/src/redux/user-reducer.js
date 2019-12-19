@@ -1,7 +1,7 @@
 import { delay, tap, mapTo } from "rxjs/operators";
 import { ofType } from "redux-observable";
 
-import { setUserId } from "../sessionStore";
+import { removeUserId } from "../sessionStore";
 import { getActionSteps } from "./redux-utils";
 
 export const CLEAR_STORE = "CLEAR_STORE";
@@ -31,6 +31,6 @@ export const updateUsernameEpic = action$ =>
   );
 
 export const clearStore = () => {
-  setUserId(null);
+  removeUserId();
   return { type: CLEAR_STORE };
 };
