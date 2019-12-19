@@ -33,6 +33,7 @@ export default function ChatRoom() {
         <Input
           className={styles.chatInput}
           fluid
+          autoFocus
           action={{
             icon: "send",
             color: "teal",

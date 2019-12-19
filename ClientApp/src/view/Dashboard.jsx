@@ -36,6 +36,7 @@ export default function Dashboard() {
       <form onSubmit={handleSubmit}>
         <Input
           fluid
+          autoFocus
           action={{
             icon: "angle double right",
             color: "green",

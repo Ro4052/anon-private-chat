@@ -53,10 +53,6 @@ namespace AnonPrivateChat.Services
                 convertedUserId = _userService.CreateUser(chatId);
             }
 
-            //if (chat.UserIds.FindAll(c => c == convertedUserId).Count == 0)
-            //{
-            //    chat.AddMember(convertedUserId);
-            //}
             chat.AddMember(convertedUserId);
 
             return convertedUserId;
