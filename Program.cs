@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace AnonPrivateChat
 {
@@ -14,9 +15,11 @@ namespace AnonPrivateChat
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    var port = Environment.GetEnvironmentVariable("PORT");
+                    Console.WriteLine("Port: " + port);
                     webBuilder
                         .UseStartup<Startup>()
-                        .UseUrls("http://0.0.0.0:" + System.Environment.GetEnvironmentVariable("PORT"));
+                        .UseUrls("http://0.0.0.0:" + port);
                 });
     }
 }
