@@ -4,9 +4,11 @@ let socket = null;
 
 export function connect(userId) {
   const wsProtocol = window.location.protocol === "http:" ? "ws" : "wss";
-  const socketUrl =
-    process.env.REACT_APP_SOCKET_URL ||
-    `${wsProtocol}://${window.location.host}/ws`;
+  // const socketUrl =
+  //   process.env.REACT_APP_SOCKET_URL ||
+  //   `${wsProtocol}://${window.location.host}/ws`;
+  const socketUrl = `${wsProtocol}://${window.location.host}/ws`;
+  // const socketUrl = "ws://http://127.0.0.1:4392/ws";
   socket = new WebSocket(socketUrl);
 
   socket.onopen = () => {

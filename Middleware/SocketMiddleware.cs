@@ -19,6 +19,7 @@ namespace AnonPrivateChat.Middleware
 
         public async Task Invoke(HttpContext context)
         {
+            // context.Request.Path
             if (!context.WebSockets.IsWebSocketRequest)
             {
                 await _next.Invoke(context);
