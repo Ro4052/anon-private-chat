@@ -2,7 +2,7 @@
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster as server
 
-ENV ASPNETCORE_Environment=Production
+ENV ASPNETCORE_ENVIRONMENT=Production
 
 WORKDIR /server
 

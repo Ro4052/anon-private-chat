@@ -1,5 +1,5 @@
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using System;
 
 namespace AnonPrivateChat
@@ -8,18 +8,12 @@ namespace AnonPrivateChat
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    var port = Environment.GetEnvironmentVariable("PORT");
-                    Console.WriteLine("Port: " + port);
-                    webBuilder
-                        .UseStartup<Startup>()
-                        .UseUrls("http://0.0.0.0:" + port);
-                });
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .UseUrls("http://0.0.0.0:" + Environment.GetEnvironmentVariable("PORT"));
     }
 }
