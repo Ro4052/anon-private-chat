@@ -43,7 +43,7 @@ namespace AnonPrivateChat
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseFileServer();
             app.UseSpaStaticFiles();
 
             var webSocketOptions = new WebSocketOptions()
