@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import { Input } from "semantic-ui-react";
 
+import MessageContainer from "./MessageContainer";
 import { sendMessage } from "../sockets";
 import useChatRoom from "../hooks/useChatRoom";
-import Message from "./Message";
 import styles from "./ChatRoom.module.css";
 
 export default function ChatRoom() {
-  const messages = useSelector(state => state.chat.messages);
   const [inputContent, setInputContent] = useState("");
   useChatRoom();
 
@@ -24,11 +22,7 @@ export default function ChatRoom() {
 
   return (
     <div className={styles.chatContainer}>
-      <div className={styles.messageContainer}>
-        {messages.map((msg, i) => (
-          <Message key={i} {...msg} />
-        ))}
-      </div>
+      <MessageContainer />
       <form onSubmit={handleSubmit}>
         <Input
           className={styles.chatInput}
