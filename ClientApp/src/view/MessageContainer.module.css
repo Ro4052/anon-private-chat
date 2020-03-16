@@ -10,8 +10,5 @@
   bottom: 0;
   transform: translateY(-100%);
   width: 100%;
-}
-
-.toBottomContainer i {
-  margin: 0;
+  padding-bottom: 2px;
 }

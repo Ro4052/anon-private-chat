@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Button } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 
 import Message from "./Message";
 import styles from "./MessageContainer.module.css";
@@ -10,6 +10,7 @@ export default function MessageContainer() {
   const messageBottomRef = useRef();
   const messages = useSelector(state => state.chat.messages);
 
+  const [showUnread, setShowUnread] = useState(false);
   const [showToBottom, setShowToBottom] = useState(false);
 
   useEffect(() => {
@@ -19,10 +20,12 @@ export default function MessageContainer() {
         .bottom;
       const containerBottom = element.getBoundingClientRect().bottom;
 
-      if (messagesBottom > containerBottom && !showToBottom)
+      if (messagesBottom > containerBottom && !showToBottom) {
         setShowToBottom(true);
-      else if (messagesBottom <= containerBottom && showToBottom)
+      } else if (messagesBottom <= containerBottom && showToBottom) {
         setShowToBottom(false);
+        setShowUnread(false);
+      }
     };
     element.addEventListener("scroll", scrollListener);
 
@@ -32,8 +35,10 @@ export default function MessageContainer() {
   useEffect(() => {
     if (messages.slice(-1)[0]?.isMine) {
       messageBottomRef.current.scrollIntoView();
+    } else if (showToBottom) {
+      setShowUnread(true);
     }
-  }, [messages]);
+  }, [messages, showToBottom]);
 
   return (
     <>
@@ -47,8 +52,13 @@ export default function MessageContainer() {
         <div className={styles.toBottomContainer}>
           <Button
             circular
-            icon="angle double down"
-            size="large"
+            icon={
+              <Icon
+                name="angle double down"
+                size="large"
+                color={showUnread ? "yellow" : "grey"}
+              />
+            }
             onClick={() => messageBottomRef.current.scrollIntoView()}
           />
         </div>
