@@ -5,25 +5,30 @@ namespace AnonPrivateChat.Controllers
 {
     public class DefaultController : Controller
     {
-        [HttpGet]
-        [Route("/")]
-        public IActionResult Index()
+        private IActionResult Index()
         {
             return PhysicalFile(Directory.GetCurrentDirectory() + "/ClientApp/build/index.html", "text/html");
+        }
+
+        [HttpGet]
+        [Route("/")]
+        public IActionResult Root()
+        {
+            return Index();
         }
 
         [HttpGet]
         [Route("/dash")]
         public IActionResult Dash()
         {
-            return PhysicalFile(Directory.GetCurrentDirectory() + "/ClientApp/build/index.html", "text/html");
+            return Index();
         }
 
         [HttpGet]
         [Route("/chat/{id}")]
         public IActionResult Chat()
         {
-            return PhysicalFile(Directory.GetCurrentDirectory() + "/ClientApp/build/index.html", "text/html");
+            return Index();
         }
     }
 }
