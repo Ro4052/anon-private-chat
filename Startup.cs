@@ -48,7 +48,7 @@ namespace AnonPrivateChat
 
             var webSocketOptions = new WebSocketOptions()
             {
-                KeepAliveInterval = TimeSpan.FromMinutes(1)
+                KeepAliveInterval = TimeSpan.FromSeconds(30)
             };
             app.UseWebSockets(webSocketOptions);
             app.UseSocketMiddleware();
