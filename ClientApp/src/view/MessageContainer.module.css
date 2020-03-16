@@ -2,3 +2,16 @@
   flex-grow: 1;
   overflow-y: auto;
 }
+
+.toBottomContainer {
+  position: absolute;
+  display: flex;
+  justify-content: space-around;
+  bottom: 0;
+  transform: translateY(-100%);
+  width: 100%;
+}
+
+.toBottomContainer i {
+  margin: 0;
+}
