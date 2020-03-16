@@ -11,16 +11,7 @@ export function connect(userId) {
   socket = new WebSocket(socketUrl);
 
   socket.onopen = () => {
-    console.log("Socket opened");
     socket.send(userId);
-  };
-
-  socket.onclose = () => {
-    console.log("Socket closed");
-  };
-
-  socket.onerror = () => {
-    console.log("Socket errored");
   };
 
   socket.onmessage = ({ data: msg }) => {
