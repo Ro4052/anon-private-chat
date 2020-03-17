@@ -1,4 +1,5 @@
 .container {
+  height: 58px;
   display: flex;
   justify-content: space-between;
   padding: 10px;
@@ -10,8 +11,16 @@
   margin: auto 0;
 }
 
+.username {
+  cursor: pointer;
+}
+
 .nameTag {
   font-weight: bold;
+}
+
+.usernameForm {
+  display: inline-flex;
 }
 
 .container button {
