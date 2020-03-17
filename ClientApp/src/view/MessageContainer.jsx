@@ -33,9 +33,13 @@ export default function MessageContainer() {
   }, [showToBottom]);
 
   useEffect(() => {
-    if (messages.slice(-1)[0]?.isMine) {
+    if (messages.slice(-1)[0]?.isMine || !showToBottom) {
       messageBottomRef.current.scrollIntoView();
-    } else if (showToBottom) {
+    }
+  }, [messages, showToBottom]);
+
+  useEffect(() => {
+    if (!messages.slice(-1)[0]?.isMine && showToBottom) {
       setShowUnread(true);
     }
   }, [messages, showToBottom]);
