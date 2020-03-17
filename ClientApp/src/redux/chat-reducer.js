@@ -49,7 +49,6 @@ export default function reducer(state = initialState, action = {}) {
     case INIT_CHAT.success: {
       return {
         ...state,
-        username: action.username,
         isPageLoading: false,
         isChatInitialised: true
       };
