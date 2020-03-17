@@ -1,4 +1,5 @@
-﻿using AnonPrivateChat.Services;
+﻿using AnonPrivateChat.Parsers;
+using AnonPrivateChat.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnonPrivateChat.Controllers
@@ -13,11 +14,11 @@ namespace AnonPrivateChat.Controllers
             _userService = userService;
         }
 
-        //[HttpGet]
-        //[Route("/init")]
-        //public Guid Init()
-        //{
-        //    return _userService.CreateUser();
-        //}
+        [HttpPost]
+        [Route("/api/update-username")]
+        public void UpdateUsername(UpdateUsernameParser body)
+        {
+            _userService.UpdateUsername(body.Id, body.Username);
+        }
     }
 }

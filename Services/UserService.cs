@@ -26,5 +26,10 @@ namespace AnonPrivateChat.Services
         {
             return _userRepo.GetOne(id);
         }
+
+        public void UpdateUsername(Guid id, string username)
+        {
+            GetUser(id).Username = username;
+        }
     }
 }

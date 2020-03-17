@@ -5,7 +5,8 @@ import { Input } from "semantic-ui-react";
 export default function DynamicInput({
   usernameSelector,
   labelClass,
-  formClass
+  formClass,
+  inputSubmit
 }) {
   const username = useSelector(usernameSelector) || "Unnamed user";
   const inputRef = useRef();
@@ -24,10 +25,10 @@ export default function DynamicInput({
     }
   };
 
-  const handleSubmit = e => {
+  const onSubmit = e => {
     e.preventDefault();
     if (inputValue.length > 0) {
-      console.log(inputValue);
+      inputSubmit(inputValue);
       setShowInput(false);
     }
   };
@@ -49,7 +50,7 @@ export default function DynamicInput({
   return (
     <>
       {showInput ? (
-        <form ref={inputRef} className={formClass} onSubmit={handleSubmit}>
+        <form ref={inputRef} className={formClass} onSubmit={onSubmit}>
           <Input
             placeholder="Username..."
             value={inputValue}

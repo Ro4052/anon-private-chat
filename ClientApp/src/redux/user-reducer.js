@@ -1,7 +1,9 @@
-import { delay, tap, mapTo } from "rxjs/operators";
+import { from } from "rxjs";
+import { mapTo, switchMap } from "rxjs/operators";
 import { ofType } from "redux-observable";
+import axios from "axios";
 
-import { removeUserId } from "../sessionStore";
+import { getUserId, removeUserId } from "../sessionStore";
 import { getActionSteps } from "./redux-utils";
 
 import { INIT_CHAT } from "./chat-reducer";
@@ -10,7 +12,8 @@ export const CLEAR_STORE = "CLEAR_STORE";
 const UPDATE_USERNAME = getActionSteps("UPDATE_USERNAME");
 
 const initialState = {
-  username: null
+  username: null,
+  isUsernameLoading: false
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -21,6 +24,12 @@ export default function reducer(state = initialState, action = {}) {
     case INIT_CHAT.success: {
       return { ...state, username: action.username };
     }
+    case UPDATE_USERNAME.request: {
+      return { ...state, isUsernameLoading: true };
+    }
+    case UPDATE_USERNAME.success: {
+      return { ...state, isUsernameLoading: false, username: action.username };
+    }
     default: {
       return state;
     }
@@ -30,12 +39,19 @@ export default function reducer(state = initialState, action = {}) {
 export const updateUsernameEpic = action$ =>
   action$.pipe(
     ofType(UPDATE_USERNAME.request),
-    delay(1000),
-    tap(name => console.log(name)),
-    mapTo({ type: UPDATE_USERNAME.success })
+    switchMap(({ username }) =>
+      from(
+        axios.post("/api/update-username", { id: getUserId(), username })
+      ).pipe(mapTo({ type: UPDATE_USERNAME.success, username }))
+    )
   );
 
 export const clearStore = () => {
   removeUserId();
   return { type: CLEAR_STORE };
 };
+
+export const updateUsername = username => ({
+  type: UPDATE_USERNAME.request,
+  username
+});
