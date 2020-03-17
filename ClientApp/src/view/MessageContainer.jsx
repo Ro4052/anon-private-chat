@@ -22,6 +22,7 @@ export default function MessageContainer() {
 
       if (messagesBottom > containerBottom && !showToBottom) {
         setShowToBottom(true);
+        setShowUnread(false);
       } else if (messagesBottom <= containerBottom && showToBottom) {
         setShowToBottom(false);
         setShowUnread(false);
@@ -39,10 +40,10 @@ export default function MessageContainer() {
   }, [messages, showToBottom]);
 
   useEffect(() => {
-    if (!messages.slice(-1)[0]?.isMine && showToBottom) {
+    if (!messages.slice(-1)[0]?.isMine) {
       setShowUnread(true);
     }
-  }, [messages, showToBottom]);
+  }, [messages]);
 
   return (
     <>
