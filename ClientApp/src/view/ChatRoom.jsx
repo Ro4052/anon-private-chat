@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Input } from "semantic-ui-react";
 
+import TopBar from "./TopBar";
 import MessageContainer from "./MessageContainer";
 import { sendMessage } from "../sockets";
 import useChatRoom from "../hooks/useChatRoom";
@@ -22,6 +23,7 @@ export default function ChatRoom() {
 
   return (
     <div className={styles.chatContainer}>
+      <TopBar />
       <MessageContainer />
       <form onSubmit={handleSubmit}>
         <Input
