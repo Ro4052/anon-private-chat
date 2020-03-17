@@ -7,7 +7,7 @@ export default function DynamicInput({
   labelClass,
   formClass
 }) {
-  const username = useSelector(usernameSelector);
+  const username = useSelector(usernameSelector) || "Unnamed user";
   const inputRef = useRef();
 
   const [showInput, setShowInput] = useState(false);
