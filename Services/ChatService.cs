@@ -17,13 +17,16 @@ namespace AnonPrivateChat.Services
             _chatRepo = chatRepo;
         }
 
-        private static void RemoveUnjoinedChat(IRepository<Chat> chats, Chat chat)
+        private static bool RemoveUnjoinedChat(IRepository<Chat> chats, Chat chat)
         {
             Thread.Sleep(300000);
             if (chat.UserIds.Count == 0)
             {
                 chats.RemoveOne(chat.Id);
+                return true;
             }
+
+            return false;
         }
 
         public Guid CreateChat()
@@ -32,7 +35,14 @@ namespace AnonPrivateChat.Services
             var chat = new Chat(chatId);
             _chatRepo.AddOne(chat);
 
-            Thread thread = new Thread(() => RemoveUnjoinedChat(_chatRepo, chat));
+            Thread thread = new Thread(() =>
+            {
+                bool chatClosed = false;
+                while(!chatClosed)
+                {
+                    chatClosed = RemoveUnjoinedChat(_chatRepo, chat);
+                }
+            });
             thread.Start();
 
             return chatId;
