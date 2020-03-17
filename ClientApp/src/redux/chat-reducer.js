@@ -1,5 +1,5 @@
 import { from, of } from "rxjs";
-import { switchMap, mapTo, catchError, tap } from "rxjs/operators";
+import { switchMap, mapTo, map, catchError, tap } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import axios from "axios";
 
@@ -9,9 +9,10 @@ import history from "../history";
 import { connect } from "../sockets";
 import * as errors from "../error-types";
 import { getActionSteps } from "./redux-utils";
+import { formatKeys } from "../utils";
 
 const CREATE_CHAT = getActionSteps("CREATE_CHAT");
-const INIT_CHAT = getActionSteps("INIT_CHAT");
+export const INIT_CHAT = getActionSteps("INIT_CHAT");
 const INVALID_CHAT_ID = "INVALID_CHAT_ID";
 const NEW_MESSAGE = "NEW_MESSAGE";
 
@@ -46,7 +47,12 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, isPageLoading: true, isChatInitialised: false };
     }
     case INIT_CHAT.success: {
-      return { ...state, isPageLoading: false, isChatInitialised: true };
+      return {
+        ...state,
+        username: action.username,
+        isPageLoading: false,
+        isChatInitialised: true
+      };
     }
     case INIT_CHAT.failure: {
       return {
@@ -88,11 +94,15 @@ export const initChatEpic = action$ =>
         })
       )
     ),
-    tap(({ data }) => {
-      setUserId(data);
-      connect(data);
+    map(({ data }) => formatKeys(data)),
+    tap(({ id }) => {
+      setUserId(id);
+      connect(id);
     }),
-    mapTo({ type: INIT_CHAT.success }),
+    map(({ username }) => ({
+      type: INIT_CHAT.success,
+      username
+    })),
     catchError(e =>
       of({
         type: INIT_CHAT.failure,

@@ -1,4 +1,5 @@
 ﻿using System;
+using AnonPrivateChat.Models;
 using AnonPrivateChat.Parsers;
 using AnonPrivateChat.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace AnonPrivateChat.Controllers
 
         [HttpPost]
         [Route("/api/init-chat")]
-        public Guid InitChat(InitChatParser body)
+        public string InitChat(InitChatParser body)
         {
             return _chatService.InitChat(body.GetParsedUserId(), body.GetParsedChatId());
         }

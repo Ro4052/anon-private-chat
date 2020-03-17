@@ -4,6 +4,8 @@ import { ofType } from "redux-observable";
 import { removeUserId } from "../sessionStore";
 import { getActionSteps } from "./redux-utils";
 
+import { INIT_CHAT } from "./chat-reducer";
+
 export const CLEAR_STORE = "CLEAR_STORE";
 const UPDATE_USERNAME = getActionSteps("UPDATE_USERNAME");
 
@@ -15,6 +17,9 @@ export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case CLEAR_STORE: {
       return initialState;
+    }
+    case INIT_CHAT.success: {
+      return { ...state, username: action.username };
     }
     default: {
       return state;

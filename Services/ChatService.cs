@@ -1,6 +1,7 @@
 ﻿using AnonPrivateChat.Exceptions;
 using AnonPrivateChat.Models;
 using AnonPrivateChat.Repositories;
+using Newtonsoft.Json;
 using System;
 using System.Threading;
 
@@ -49,7 +50,7 @@ namespace AnonPrivateChat.Services
         }
 
 
-        public Guid InitChat(Guid? userId, Guid chatId)
+        public string InitChat(Guid? userId, Guid chatId)
         {
             var chat = _chatRepo.GetOne(chatId);
             if (chat == null)
@@ -65,7 +66,10 @@ namespace AnonPrivateChat.Services
 
             chat.AddMember(convertedUserId);
 
-            return convertedUserId;
+            var username = _userService.GetUser(convertedUserId).Username;
+            var response = new InitChatResponse(convertedUserId, username);
+
+            return JsonConvert.SerializeObject(response);
         }
     }
 }

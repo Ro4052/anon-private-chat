@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnonPrivateChat.Models;
+using System;
 
 namespace AnonPrivateChat.Services
 {
@@ -6,6 +7,6 @@ namespace AnonPrivateChat.Services
     {
         Guid CreateChat();
 
-        Guid InitChat(Guid? userId, Guid chatId);
+        string InitChat(Guid? userId, Guid chatId);
     }
 }
