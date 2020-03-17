@@ -8,7 +8,7 @@ export const CLEAR_STORE = "CLEAR_STORE";
 const UPDATE_USERNAME = getActionSteps("UPDATE_USERNAME");
 
 const initialState = {
-  username: null
+  username: "Unnamed user"
 };
 
 export default function reducer(state = initialState, action = {}) {
