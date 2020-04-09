@@ -1,17 +1,17 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 
 import { clearStore, updateUsername } from "../redux/user-reducer";
+import useLabelIcon from "../hooks/useLabelIcon";
 import DynamicInput from "./DynamicInput";
 import styles from "./TopBar.module.css";
 
 export default function TopBar() {
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const isUsernameLoading = useSelector(state => state.user.isUsernameLoading);
+  const labelIcon = useLabelIcon();
 
   const handleSubmit = username => dispatch(updateUsername(username));
 
@@ -25,7 +25,7 @@ export default function TopBar() {
           labelClass={styles.username}
           formClass={styles.usernameForm}
           inputSubmit={handleSubmit}
-          loading={isUsernameLoading}
+          labelIcon={labelIcon}
         />
       </div>
       <Button

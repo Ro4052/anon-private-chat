@@ -13,6 +13,7 @@
 
 .username {
   cursor: pointer;
+  margin-right: 3px;
 }
 
 .nameTag {
