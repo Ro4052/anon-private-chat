@@ -53,20 +53,37 @@ namespace AnonPrivateChat.Services
             var msg = await SocketHelper.ReceiveStringAsync(user.Socket, user.Ct);
             if (msg != null)
             {
-                await BroadCastMessage(chat, user, msg);
+                await BroadcastMessage(chat, user, msg);
             }
 
             return msg;
         }
 
-        private async Task BroadCastMessage(Chat chat, User user, string msg)
+        private async Task BroadcastMessage(Chat chat, User sourceUser, string msg, bool isStatusMessage=false)
         {
             await Task.WhenAll(chat.UserIds.Select(async targetId =>
             {
                 var targetUser = _userRepo.GetOne(targetId);
-                var message = new Message(user.Username, msg, user.Id == targetUser.Id);
-                await SocketHelper.SendStringAsync(targetUser.Socket, JsonConvert.SerializeObject(message), targetUser.Ct);
+                if (targetUser.Socket != null)
+                {
+                    var message = new Message(
+                        sourceUser.Username,
+                        msg,
+                        sourceUser.Id == targetUser.Id,
+                        isStatusMessage
+                    );
+                    await SocketHelper.SendStringAsync(
+                        targetUser.Socket,
+                        JsonConvert.SerializeObject(message),
+                        targetUser.Ct
+                    );
+                }
             }));
+        }
+
+        public void BroadcastStatusMessage(Chat chat, User sourceUser, string msg)
+        {
+            _ = BroadcastMessage(chat, sourceUser, msg, true);
         }
     }
 }

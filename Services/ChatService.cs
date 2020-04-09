@@ -10,11 +10,13 @@ namespace AnonPrivateChat.Services
     public class ChatService : IChatService
     {
         private readonly IUserService _userService;
+        private readonly ISocketService _socketService;
         private readonly IRepository<Chat> _chatRepo;
 
-        public ChatService(IUserService userService, IRepository<Chat> chatRepo)
+        public ChatService(IUserService userService, ISocketService socketService, IRepository<Chat> chatRepo)
         {
             _userService = userService;
+            _socketService = socketService;
             _chatRepo = chatRepo;
         }
 
@@ -65,6 +67,11 @@ namespace AnonPrivateChat.Services
             }
 
             chat.AddMember(convertedUserId);
+            _socketService.BroadcastStatusMessage(
+                chat,
+                _userService.GetUser(convertedUserId),
+                "JOIN"
+            );
 
             var username = _userService.GetUser(convertedUserId).Username;
             var response = new InitChatResponse(convertedUserId, username);

@@ -19,3 +19,8 @@
 .otherUserMessage {
   background-color: #ecec55cc;
 }
+
+.statusLabel {
+  display: table !important;
+  margin: 5px auto !important;
+}
