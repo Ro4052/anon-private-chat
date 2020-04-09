@@ -4,13 +4,24 @@ import cx from "classnames";
 
 import styles from "./Message.module.css";
 
-export default function Message({ user, msg, isMine, isStatusMessage }) {
-  const username = isMine ? "You" : user ?? "Unnamed user";
+export default function Message({ user, msg, isMine, type }) {
+  const defaultedUsername = isMine ? "You" : user ?? "Unnamed user";
 
-  return isStatusMessage ? (
-    <StatusMessage username={username} type={msg} />
+  return type === "MSG" ? (
+    <UserMessage
+      username={user}
+      defaultedUsername={defaultedUsername}
+      msg={msg}
+      isMine={isMine}
+    />
   ) : (
-    <UserMessage username={username} msg={msg} isMine={isMine} />
+    <StatusMessage
+      username={user}
+      defaultedUsername={defaultedUsername}
+      type={type}
+      msg={msg}
+      isMine={isMine}
+    />
   );
 }
 
@@ -28,10 +39,13 @@ function UserMessage({ username, msg, isMine }) {
   );
 }
 
-function StatusMessage({ username, type }) {
+function StatusMessage({ username, defaultedUsername, type, msg, isMine }) {
   const statusText = {
-    JOIN: `${username} joined the chat`,
-    LEAVE: `${username} left the chat`,
+    JOIN: `${defaultedUsername} joined the chat`,
+    LEAVE: `${defaultedUsername} left the chat`,
+    UPDATE_USERNAME: `${isMine ? "You" : msg ?? "Unnamed user"} changed ${
+      isMine ? "your" : "their"
+    } username to ${username}`,
   }[type];
 
   return <Label className={styles.statusLabel}>{statusText}</Label>;

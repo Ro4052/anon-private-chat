@@ -6,11 +6,15 @@ namespace AnonPrivateChat.Services
 {
     public class UserService : IUserService
     {
+        private readonly ISocketService _socketService;
         private readonly IRepository<User> _userRepo;
+        private readonly IRepository<Chat> _chatRepo;
 
-        public UserService(IRepository<User> userRepo)
+        public UserService(ISocketService socketService, IRepository<User> userRepo, IRepository<Chat> chatRepo)
         {
+            _socketService = socketService;
             _userRepo = userRepo;
+            _chatRepo = chatRepo;
         }
 
         public Guid CreateUser(Guid chatId)
@@ -29,7 +33,12 @@ namespace AnonPrivateChat.Services
 
         public void UpdateUsername(Guid id, string username)
         {
-            GetUser(id).Username = username;
+            User user = _userRepo.GetOne(id);
+            Chat chat = _chatRepo.GetOne(user.ChatId);
+
+            string oldUsername = user.Username;
+            user.Username = username;
+            _socketService.BroadcastStatusMessage(chat, user, "UPDATE_USERNAME", oldUsername);
         }
     }
 }

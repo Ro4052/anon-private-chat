@@ -60,7 +60,7 @@ namespace AnonPrivateChat.Services
             return msg;
         }
 
-        private async Task BroadcastMessage(Chat chat, User sourceUser, string msg, bool isStatusMessage=false)
+        private async Task BroadcastMessage(Chat chat, User sourceUser, string msg, string type="MSG")
         {
             await Task.WhenAll(chat.UserIds.Select(async targetId =>
             {
@@ -71,7 +71,7 @@ namespace AnonPrivateChat.Services
                         sourceUser.Username,
                         msg,
                         sourceUser.Id == targetUser.Id,
-                        isStatusMessage
+                        type
                     );
                     await SocketHelper.SendStringAsync(
                         targetUser.Socket,
@@ -82,9 +82,9 @@ namespace AnonPrivateChat.Services
             }));
         }
 
-        public void BroadcastStatusMessage(Chat chat, User sourceUser, string msg)
+        public void BroadcastStatusMessage(Chat chat, User sourceUser, string type, string msg="")
         {
-            _ = BroadcastMessage(chat, sourceUser, msg, true);
+            _ = BroadcastMessage(chat, sourceUser, msg, type);
         }
     }
 }

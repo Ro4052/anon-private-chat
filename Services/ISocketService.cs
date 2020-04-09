@@ -9,6 +9,6 @@ namespace AnonPrivateChat.Services
     {
         public Task NewSocket(WebSocket socket, CancellationToken ct);
 
-        public void BroadcastStatusMessage(Chat chat, User sourceUser, string msg);
+        public void BroadcastStatusMessage(Chat chat, User sourceUser, string type, string msg = "");
     }
 }
