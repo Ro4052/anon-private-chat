@@ -1,14 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Input } from "semantic-ui-react";
+import { Input, Loader } from "semantic-ui-react";
+
+import styles from "./DynamicInput.module.css";
 
 export default function DynamicInput({
   usernameSelector,
+  defaultValue,
   labelClass,
   formClass,
-  inputSubmit
+  inputSubmit,
+  loading
 }) {
-  const username = useSelector(usernameSelector) || "Unnamed user";
+  const username = useSelector(usernameSelector) ?? defaultValue;
   const inputRef = useRef();
 
   const [showInput, setShowInput] = useState(false);
@@ -58,9 +62,12 @@ export default function DynamicInput({
           />
         </form>
       ) : (
-        <span className={labelClass} onClick={handleClick}>
-          {username}
-        </span>
+        <>
+          <span className={labelClass} onClick={handleClick}>
+            {username}
+          </span>
+          <Loader inline active={loading} size="mini" className={styles.loader} />
+        </>
       )}
     </>
   );
