@@ -31,6 +31,7 @@ function UserMessage({ username, msg, isMine }) {
 function StatusMessage({ username, type }) {
   const statusText = {
     JOIN: `${username} joined the chat`,
+    LEAVE: `${username} left the chat`,
   }[type];
 
   return <Label className={styles.statusLabel}>{statusText}</Label>;

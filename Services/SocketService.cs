@@ -46,6 +46,7 @@ namespace AnonPrivateChat.Services
 
             user.Socket = null;
             chat.UserIds.Remove(userId);
+            BroadcastStatusMessage(chat, user, "LEAVE");
         }
 
         private async Task<string> ListenForMessage(User user, Chat chat)
