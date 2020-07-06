@@ -48,5 +48,9 @@ function StatusMessage({ username, defaultedUsername, type, msg, isMine }) {
     } username to ${username}`,
   }[type];
 
-  return <Label className={styles.statusLabel}>{statusText}</Label>;
+  return (
+    <Label color={isMine ? "yellow" : null} className={styles.statusLabel}>
+      {statusText}
+    </Label>
+  );
 }
