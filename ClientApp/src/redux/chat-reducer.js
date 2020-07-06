@@ -1,5 +1,13 @@
 import { from, of } from "rxjs";
-import { switchMap, mapTo, map, catchError, tap } from "rxjs/operators";
+import {
+  switchMap,
+  mapTo,
+  map,
+  catchError,
+  tap,
+  skip,
+  filter,
+} from "rxjs/operators";
 import { ofType } from "redux-observable";
 import axios from "axios";
 
@@ -9,6 +17,7 @@ import history from "../history";
 import { connect } from "../sockets";
 import * as errors from "../error-types";
 import { getActionSteps } from "./redux-utils";
+import { sendMessageNotification } from "../notifications";
 import { formatKeys } from "../utils";
 
 const CREATE_CHAT = getActionSteps("CREATE_CHAT");
@@ -22,7 +31,7 @@ const initialState = {
   isPageLoading: false,
   isChatInitialised: false,
   messages: [],
-  pageError: null
+  pageError: null,
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -40,7 +49,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         isPageLoading: false,
-        pageError: errors.CHAT_CREATE_ERROR
+        pageError: errors.CHAT_CREATE_ERROR,
       };
     }
     case INIT_CHAT.request: {
@@ -50,7 +59,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         isPageLoading: false,
-        isChatInitialised: true
+        isChatInitialised: true,
       };
     }
     case INIT_CHAT.failure: {
@@ -58,7 +67,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         isPageLoading: false,
         isChatInitialised: false,
-        pageError: action.error
+        pageError: action.error,
       };
     }
     case INVALID_CHAT_ID: {
@@ -89,7 +98,7 @@ export const initChatEpic = action$ =>
       from(
         axios.post("/api/init-chat", {
           userId: getUserId(),
-          chatId
+          chatId,
         })
       )
     ),
@@ -100,7 +109,7 @@ export const initChatEpic = action$ =>
     }),
     map(({ username }) => ({
       type: INIT_CHAT.success,
-      username
+      username,
     })),
     catchError(e =>
       of({
@@ -108,25 +117,33 @@ export const initChatEpic = action$ =>
         error:
           e.response.status === 404
             ? errors.INVALID_CHAT_ID_ERROR
-            : errors.UNKNOWN_ERROR
+            : errors.UNKNOWN_ERROR,
       })
     )
   );
 
+export const newMessageEpic = action$ =>
+  action$.pipe(
+    ofType(NEW_MESSAGE),
+    filter(({ msg }) => !msg.isMine),
+    tap(sendMessageNotification),
+    skip()
+  );
+
 export const createChat = () => ({
-  type: CREATE_CHAT.request
+  type: CREATE_CHAT.request,
 });
 
 export const invalidChatId = () => ({
-  type: INVALID_CHAT_ID
+  type: INVALID_CHAT_ID,
 });
 
 export const initChat = chatId => ({
   type: INIT_CHAT.request,
-  chatId
+  chatId,
 });
 
 export const newMessage = msg => ({
   type: NEW_MESSAGE,
-  msg
+  msg,
 });
