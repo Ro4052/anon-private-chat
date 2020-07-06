@@ -58,6 +58,9 @@ function createDesktopNotification(msg) {
           options.body = getStatusMessageText(msg);
           break;
         }
+        default: {
+          return;
+        }
       }
 
       new Notification(title, options);
