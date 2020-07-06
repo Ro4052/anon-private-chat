@@ -11,3 +11,17 @@ export function formatKeys(obj) {
 
   return formattedObj;
 }
+
+export function getDefaultedUserName(user, isMine) {
+  return isMine ? "You" : user ?? "Unnamed user";
+}
+
+export function getStatusMessageText(msg, defaultedUsername) {
+  return {
+    JOIN: `${defaultedUsername} joined the chat`,
+    LEAVE: `${defaultedUsername} left the chat`,
+    UPDATE_USERNAME: `${
+      msg.isMine ? "You" : msg.msg ?? "Unnamed user"
+    } changed ${msg.isMine ? "your" : "their"} username to ${msg.user}`,
+  }[msg.type];
+}

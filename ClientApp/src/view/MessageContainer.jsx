@@ -53,7 +53,7 @@ export default function MessageContainer() {
           <Message
             key={i}
             className={cx({ [styles.lastMessage]: i === messages.length - 1 })}
-            {...msg}
+            msg={msg}
           />
         ))}
         <div ref={messageBottomRef} />
