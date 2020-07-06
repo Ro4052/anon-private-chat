@@ -12,8 +12,8 @@ export function formatKeys(obj) {
   return formattedObj;
 }
 
-export function getDefaultedUserName(user, isMine) {
-  return isMine ? "You" : user ?? "Unnamed user";
+export function getDefaultedUserName(username, isMine) {
+  return isMine ? "You" : username ?? "Unnamed user";
 }
 
 export function getStatusMessageText(msg, defaultedUsername) {
