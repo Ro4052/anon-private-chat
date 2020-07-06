@@ -4,11 +4,12 @@ import cx from "classnames";
 
 import styles from "./Message.module.css";
 
-export default function Message({ user, msg, isMine, type }) {
+export default function Message({ className, user, msg, isMine, type }) {
   const defaultedUsername = isMine ? "You" : user ?? "Unnamed user";
 
   return type === "MSG" ? (
     <UserMessage
+      className={className}
       username={user}
       defaultedUsername={defaultedUsername}
       msg={msg}
@@ -16,6 +17,7 @@ export default function Message({ user, msg, isMine, type }) {
     />
   ) : (
     <StatusMessage
+      className={className}
       username={user}
       defaultedUsername={defaultedUsername}
       type={type}
@@ -25,10 +27,11 @@ export default function Message({ user, msg, isMine, type }) {
   );
 }
 
-function UserMessage({ username, msg, isMine }) {
+function UserMessage({ className, username, msg, isMine }) {
   return (
     <div
       className={cx(
+        className,
         styles.baseMessage,
         isMine ? styles.myUserMessage : styles.otherUserMessage
       )}
@@ -39,7 +42,14 @@ function UserMessage({ username, msg, isMine }) {
   );
 }
 
-function StatusMessage({ username, defaultedUsername, type, msg, isMine }) {
+function StatusMessage({
+  className,
+  username,
+  defaultedUsername,
+  type,
+  msg,
+  isMine,
+}) {
   const statusText = {
     JOIN: `${defaultedUsername} joined the chat`,
     LEAVE: `${defaultedUsername} left the chat`,
@@ -49,7 +59,10 @@ function StatusMessage({ username, defaultedUsername, type, msg, isMine }) {
   }[type];
 
   return (
-    <Label color={isMine ? "yellow" : null} className={styles.statusLabel}>
+    <Label
+      color={isMine ? "yellow" : null}
+      className={cx(className, styles.statusLabel)}
+    >
       {statusText}
     </Label>
   );

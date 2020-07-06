@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Button, Icon } from "semantic-ui-react";
+import cx from "classnames";
 
 import Message from "./Message";
 import styles from "./MessageContainer.module.css";
@@ -49,7 +50,11 @@ export default function MessageContainer() {
     <>
       <div ref={containerRef} className={styles.messageContainer}>
         {messages.map((msg, i) => (
-          <Message key={i} {...msg} />
+          <Message
+            key={i}
+            className={cx({ [styles.lastMessage]: i === messages.length - 1 })}
+            {...msg}
+          />
         ))}
         <div ref={messageBottomRef} />
       </div>

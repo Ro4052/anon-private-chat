@@ -1,6 +1,11 @@
 .messageContainer {
   flex-grow: 1;
   overflow-y: auto;
+  padding-bottom: 5px;
+}
+
+.lastMessage {
+  margin-bottom: 0 !important;
 }
 
 .toBottomContainer {
