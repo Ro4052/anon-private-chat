@@ -1,4 +1,5 @@
 import { getDefaultedUserName, getStatusMessageText } from "./utils";
+import { getAllNotificationSettings } from "./localStore";
 
 import notificationSound from "./assets/clearly.mp3";
 
@@ -17,19 +18,40 @@ export function sendMessageNotification({ msg }) {
    * - Audio (default on)
    */
 
-  createAudioNotification();
-  createDesktopNotification(msg);
+  const notificationSettings = getAllNotificationSettings();
+
+  createAudioNotification(msg, notificationSettings.audio);
+  createPushNotification(msg, notificationSettings.push);
 }
 
-function createAudioNotification() {
+function createAudioNotification(msg, notificationSettings) {
+  switch (msg.type) {
+    case "MSG": {
+      if (!notificationSettings.NEW_MESSAGE.on) return;
+      break;
+    }
+    case "JOIN":
+    case "LEAVE": {
+      if (!notificationSettings.USER_JOIN_LEAVE.on) return;
+      break;
+    }
+    case "UPDATE_USERNAME": {
+      if (!notificationSettings.USER_NAME_CHANGE.on) return;
+      break;
+    }
+    default: {
+      return;
+    }
+  }
   notificationAudio.play();
 }
 
-function createDesktopNotification(msg) {
+function createPushNotification(msg, notificationSettings) {
   if (document.hasFocus()) return;
 
   if (!("Notification" in window)) {
-    alert("This browser does not support desktop notification");
+    alert("This browser does not support push notification");
+    return;
   }
   Notification.requestPermission(permission => {
     if (permission === "granted") {
@@ -43,17 +65,20 @@ function createDesktopNotification(msg) {
 
       switch (msg.type) {
         case "MSG": {
+          if (!notificationSettings.NEW_MESSAGE.on) return;
           title = defaultedUsername;
           options.body = msg.msg;
           break;
         }
         case "JOIN":
         case "LEAVE": {
+          if (!notificationSettings.USER_JOIN_LEAVE.on) return;
           title = defaultedUsername;
           options.body = getStatusMessageText(msg, defaultedUsername);
           break;
         }
         case "UPDATE_USERNAME": {
+          if (!notificationSettings.USER_NAME_CHANGE.on) return;
           title = msg.user;
           options.body = getStatusMessageText(msg);
           break;
