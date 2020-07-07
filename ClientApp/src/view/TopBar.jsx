@@ -5,6 +5,7 @@ import { Button } from "semantic-ui-react";
 
 import { clearStore, updateUsername } from "../redux/user-reducer";
 import useLabelIcon from "../hooks/useLabelIcon";
+import Settings from "./Settings";
 import DynamicInput from "./DynamicInput";
 import styles from "./TopBar.module.css";
 
@@ -18,6 +19,7 @@ export default function TopBar() {
   return (
     <div className={styles.container}>
       <div className={styles.usernameHolder}>
+        <Settings />
         <span className={styles.nameTag}>You:</span>{" "}
         <DynamicInput
           usernameSelector={state => state.user.username}

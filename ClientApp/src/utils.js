@@ -25,3 +25,5 @@ export function getStatusMessageText(msg, defaultedUsername) {
     } changed ${msg.isMine ? "your" : "their"} username to ${msg.user}`,
   }[msg.type];
 }
+
+export const deepObjectCopy = obj => JSON.parse(JSON.stringify(obj));
