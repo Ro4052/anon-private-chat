@@ -25,8 +25,6 @@ export const INIT_CHAT = getActionSteps("INIT_CHAT");
 const INVALID_CHAT_ID = "INVALID_CHAT_ID";
 const NEW_MESSAGE = "NEW_MESSAGE";
 
-connect();
-
 const initialState = {
   isPageLoading: false,
   isChatInitialised: false,
