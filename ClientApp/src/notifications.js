@@ -59,8 +59,8 @@ function createPushNotification(msg, notificationSettings) {
       const defaultedUsername = getDefaultedUserName(msg.user, false);
       const options = {
         silent: true,
-        renotify: false,
-        requireInteraction: false,
+        renotify: true,
+        tag: "tag",
       };
 
       switch (msg.type) {
